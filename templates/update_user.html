@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block navbar %}
+    {% with lang=lang, username=user.name %}
+        {% include 'topnavbar.html' %}
+    {% endwith %}
+{% endblock %}
+
+{% block title %}Cancelar inscrição{% endblock %}
+{% block content %}
+    <div class="w3-container" style="text-align: center; padding:0">
+        <div class="w3-row">
+            <div class="w3-quarter">&nbsp;</div>
+            <div class="w3-half" style="text-align: justify">
+                <div class="w3-row" style="margin: 15px 0;"><label for="current_city">Município atual:</label></div>
+                <div class="w3-row" id="current_city_field">
+                    <select name="current_city" id="current_city" style="width: 100%" disabled>
+                        <option value="{{ user_city.id }}">{{ user_city.name }}</option>
+                    </select>
+                </div>
+                <hr>
+                <div class="w3-row" style="margin: 15px 0"><label for="current_school">Instituição de ensino atual:</label></div>
+                <div class="w3-row" >
+                    <select name="current_school" id="current_school" style="width: 100%" disabled>
+                        <option value="{{ user_school.id }}">{{ user_school.name }}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <form action="{{ url_for('update_user') }}" method="post" id="update_form">
+            <div class="w3-row">
+                <div class="w3-quarter">&nbsp;</div>
+                <div class="w3-half" style="text-align: justify">
+                    <hr>
+                    <div class="w3-row" style="margin: 15px 0;"><label for="city">Escolha o município:</label></div>
+                    <div class="w3-row" id="city_field">
+                        <select name="city" id="city" style="width: 100%">
+                            {% for city in cities %}
+                                <option value="{{ city.id }}">{{ city.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <hr>
+                    <div class="w3-row" style="margin: 15px 0"><label for="school">Escolha a instituição de ensino:</label></div>
+                    <div class="w3-row" id="school_field">
+                        <select name="school" id="school" style="width: 100%"></select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="w3-container">
+            <div class="w3-row" style="margin:15px 0">
+                <div class="w3-quarter">&nbsp;</div>
+                <div class="w3-half">
+                    {% if not user.name %}
+                        <p style="color:#c81b22; font-weight: bold">Você deve fazer login na sua conta Wiki antes de finalizar sua inscrição.</p>
+                    {% endif %}
+                    <button type="submit" form="update_form" class="button" style="width: 100%; margin: 0; {% if not user.name %}background-color:#555555{% endif %}" {% if not user.name %}disabled{% endif %}>Atualizar cadastro</button>
+                </div>
+            </div>
+            <div class="w3-row" style="margin:15px 0">
+                <div class="w3-quarter">&nbsp;</div>
+                <div class="w3-half">
+                    <form action="{{ url_for('delete_user') }}" method="post" id="delete_form">
+                        <input type="hidden" id="delete" name="delete" value="True">
+                        <input class="button" type="button" id="deletar" style="margin: 0;width: 100%; background-color: {% if not user.name %}#555555{% else %}#c81b22{% endif %}" {% if not user.name %}disabled{% endif %} value="Deletar cadastro">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $("#city").click(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: '/pegar-escola',
+                type: 'POST',
+                data: $('#update_form').serialize(),
+                success: function (selectOptions) {
+                    $("#school").empty();
+                    for (var i = 0; i < selectOptions.length; i++) {
+                        $("#school").append(
+                            $("<option></option>")
+                                .attr("value", selectOptions[i]["id"])
+                                .text(selectOptions[i]["name"])
+                        );
+                    }
+                }
+            });
+        }).click();
+
+        $('#deletar').click( function () {
+            if(confirm("Tem certeza que deseja excluir esta entrada? Isto não poderá ser desfeito! Mas você poderá se inscrever novamente durante o período do concurso.")){
+                $('#delete_form').submit();
+            }
+            else {
+                return false;
+            }
+        });
+    </script>
+{% endblock %}

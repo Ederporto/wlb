@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block navbar %}
+    {% with lang=lang, username=username %}
+        {% include 'topnavbar.html' %}
+    {% endwith %}
+{% endblock %}
+
+{% block title %}Página inicial{% endblock %}
+{% block content %}
+    <div class="w3-container" style="text-align: center; padding:10px">
+        <div class="w3-row">
+            <div class="w3-quarter">&nbsp;</div>
+            <div class="w3-half">
+                <p style="font-weight:bold; font-size: 2em; margin-bottom:10px; color:#10459f">Concurso Fotográfico</p>
+                <div class="w3-container" style="height:150px; padding:0; margin: 30px 0;">
+                    <img src="{{ url_for('static', filename='WLB - logo.png') }}" height="100%">
+                </div>
+            </div>
+        </div>
+        <div class="w3-row">
+            <div class="w3-quarter">&nbsp;</div>
+            {% if not username %}
+                <div class="w3-half">
+                    <a href="{{ url_for('subscription') }}">
+                        <button type="button" style="width:100%; max-width: 360px">
+                            Inscrição
+                        </button>
+                    </a>
+                </div>
+            {% else %}
+                <div class="w3-half">
+                    <a href="{{ url_for('update_user') }}">
+                        <button type="button" style="width:100%; max-width: 360px">
+                            Modificar inscrição
+                        </button>
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+        <div class="w3-row">
+            <div class="w3-quarter">&nbsp;</div>
+            <div class="w3-half" style="text-align: justify">
+                <p style="margin:30px 0;">
+                    Ao realizar a sua inscrição, você deverá escolher uma das instituições de ensino disponíveis. <b>
+                    Não é necessário</b> ter algum vínculo com a instituição de ensino escolhida. Este dado
+                    <b>somente</b> será utilizado para compilação dos participantes de cada instituição de ensino para
+                    a premiação e é criptografado e anonimizado na base de dados desta ferramenta para proteção à sua
+                    privacidade. De modo algum ele será atrelado à sua conta Wiki ou será utilizado senão para a
+                    finalidade declarada.
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

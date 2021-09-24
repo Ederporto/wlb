@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block navbar %}
+    {% with lang=lang, username=username %}
+        {% include 'topnavbar.html' %}
+    {% endwith %}
+{% endblock %}
+
+{% block title %}Finalizar inscrição{% endblock %}
+{% block content %}
+    <div class="w3-container" style="text-align: center; padding:0">
+        <div class="w3-container" style="text-align: center; padding:0">
+            <form method="post" id="school_form">
+                <div class="w3-row" style="margin: 30px 0"><label for="city">Escolha o município:</label></div>
+                <div class="w3-row" id="city_field">
+                    <div class="w3-quarter">&nbsp;</div>
+                    <div class="w3-half">
+                        <select name="city" id="city" style="width: 100%">
+                            {% for city in cities %}
+                                <option value="{{ city.id }}">{{ city.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="w3-row" style="margin: 30px 0"><label for="school">Escolha a instituição de ensino:</label>
+                </div>
+                <div class="w3-row" id="school_field">
+                    <div class="w3-quarter">&nbsp;</div>
+                    <div class="w3-half">
+                        <select name="school" id="school" style="width: 100%">
+                        </select>
+                    </div>
+                </div>
+            </form>
+            <div class="w3-container">
+                <div class="w3-row" style="margin:30px 0">
+                    <div class="w3-quarter">&nbsp;</div>
+                    <div class="w3-half">
+                        {% if not username %}
+                            <p>Você deve fazer login na sua conta Wiki antes de finalizar sua inscrição.</p>{% endif %}
+                        <button type="submit" form="school_form" class="button"
+                                style="width: 100%; margin: 0; {% if not username %}background-color:#555555{% endif %}"
+                                {% if not username %}disabled{% endif %}>Enviar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $("#city").click(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: '/getschool',
+                type: 'POST',
+                data: $('#school_form').serialize(),
+                success: function (selectOptions) {
+                    $("#school").empty();
+                    for (var i = 0; i < selectOptions.length; i++) {
+                        if (selectOptions[i]["selected"]) {
+                            $("#school").append(
+                                $("<option></option>")
+                                    .attr("value", selectOptions[i]["id"])
+                                    .attr("selected", "selected")
+                                    .text(selectOptions[i]["name"])
+                            );
+                        } else {
+                            $("#school").append(
+                                $("<option></option>")
+                                    .attr("value", selectOptions[i]["id"])
+                                    .text(selectOptions[i]["name"])
+                            );
+                        }
+                    }
+                }
+            });
+        }).click();
+    </script>
+{% endblock %}

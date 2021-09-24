@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block navbar %}
+    {% with lang=lang, username=username %}
+        {% include 'topnavbar.html' %}
+    {% endwith %}
+{% endblock %}
+
+{% block title %}Inscrição{% endblock %}
+{% block content %}
+    <div class="w3-container" style="text-align: center; padding:0">
+        <form action="{{ url_for('subscription') }}" method="post" id="consent_form">
+            <div class="w3-row" style="margin:30px 0">
+                <div class="w3-quarter">&nbsp;</div>
+                <div class="w3-half" style="text-align: justify">
+                    <p style="font-weight: bold;font-size: larger; text-align: center">TERMO DE CONSENTIMENTO</p>
+                    <p>Este termo de consentimento está escrito em m observância à <a href="http://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm" target="_blank"><b>Lei nº 13.709/18 – Lei Geral de Proteção de Dados Pessoais</b></a> e demais normas e princípios que guiam a proteção de dados pessoais.</p>
+                    <p style="font-weight: bold;">CLÁUSULA PRIMEIRA - Do Consentimento</p>
+                    <p>Ao aceitar este termo você - aqui denominado(a) <b>TITULAR</b> - declara que está de forma consciente, livre e informada autorizando o <b>GRUPO DE USUÁRIOS WIKI MOVIMENTO BRASIL</b> a realizar o <b>tratamento</b> de seus dados pessoais para as finalidades a seguir estabelecidas.</p>
+                    <p>Por tratamento, entende-se o definido no <a href="http://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm#art5x" target="_blank">artigo 5º, inciso X</a>:</p>
+                    <blockquote cite="http://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm#art5x">Toda operação realizada com dados pessoais, como as que se referem a coleta,  produção, recepção, classificação, utilização, acesso, reprodução, transmissão,  distribuição,  processamento, arquivamento, armazenamento, eliminação, avaliação ou controle da informação,  modificação, comunicação, transferência, difusão ou extração.</blockquote>
+                    <p style="font-weight: bold;">CLÁUSULA SEGUNDA - Dos Dados Pessoais</p>
+                    <p>O GRUPO DE USUÁRIOS WIKI MOVIMENTO BRASIL poderá tratar, mediante autorização do titular os seguintes dados pessoais:</p>
+                    <ul>
+                        <li><b>Nome de usuário(a) nos projetos Wiki</b>: Será utilizado para identificar quais imagens carregadas no concurso contribuirão para a pontuação da instituição de ensino representada pelo TITULAR;</li>
+                        <li><b>Nome da instituição de ensino</b> à qual o TITULAR declara ser um competidor representante no concurso: Será utilizado para estabelecer um vínculo no concurso. O TITULAR competirá no concurso pela instituição de ensino que declarar nesta ferramenta.</li>
+                    </ul>
+                    <p style="font-weight: bold;">CLÁUSULA TERCEIRA - Da Finalidade do Tratamento dos Dados Pessoais</p>
+                    <p>Em observância ao <a href="https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2018/lei/l13709.htm#art8§4" target="_blank">artigo 8º, parágrafo 4º</a>, este termo apresenta uma finalidade específica e determinada, sendo que os dados serão utilizados para:</p>
+                    <ul><li>Determinação da instituição de ensino vencedora, de acordo com as regras do concurso.</li></ul>
+                    <p style="font-weight: bold;">CLÁUSULA QUARTA - Da Segurança dos Dados Pessoais</p>
+                    <p>O GRUPO DE USUÁRIOS WIKI MOVIMENTO BRASIL responsabiliza-se em implementar medidas de segurança contra acessos não autorizados e qualquer forma de tratamento inadequada ou ilícita dos dados.</p>
+                    <p>Quando da escolha de uma instituição de ensino para representar no concurso, os dados do TITULAR são criptografados para garantir a proteção de sua privacidade. A ligação entre Nome de usuário(a) e instituição de ensino representada é de acesso somente do TITULAR, através da tela de inscrição e da equipe de Produtos e Recursos do GRUPO DE USUÁRIOS WIKI MOVIMENTO BRASIL.</p>
+                    <p style="font-weight: bold;">CLÁUSULA QUINTA - Do Compartilhamento dos Dados Pessoais</p>
+                    <p>O GRUPO DE USUÁRIOS WIKI MOVIMENTO BRASIL responsabiliza-se em não compartilhar os dados pessoais com terceiros, nem publicizar a relação nome de usuário(a) Wiki e instituição de ensino representada. A divulgação de lista de arquivos de imagem carregados no Wikimedia Commons que computem pontuação para cada instituição de ensino poderá ser compartilhada com a instituição de ensino.</p>
+                    <hr>
+                    <div class="w3-row">
+                        <input type="checkbox" id="consent" name="consent" required {% if not username %}disabled{% endif %}>
+                        <label for="consent">Declaro que li e entendi o afirmado acima e que aceito o termo de consentimento de forma consciente, livre e informada.</label>
+                    </div>
+                    <hr>
+                    <div class="w3-row" style="margin: 15px 0;"><label for="city">Escolha o município:</label></div>
+                    <div class="w3-row" id="city_field">
+                        <select name="city" id="city" style="width: 100%">
+                            {% for city in cities %}
+                                <option value="{{ city.id }}">{{ city.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <hr>
+                    <div class="w3-row" style="margin: 15px 0"><label for="school">Escolha a instituição de ensino:</label></div>
+                    <div class="w3-row" id="school_field">
+                        <select name="school" id="school" style="width: 100%"></select>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="w3-container">
+            <div class="w3-row" style="margin:0 0 60px 0">
+                <div class="w3-quarter">&nbsp;</div>
+                <div class="w3-half">
+                    {% if not username %}
+                        <p style="color:#c81b22; font-weight: bold">Você deve fazer login na sua conta Wiki antes de finalizar sua inscrição.</p>{% endif %}
+                    <button type="submit" form="consent_form" class="button" style="width: 100%; margin: 0; {% if not username %}background-color:#555555{% endif %}" {% if not username %}disabled{% endif %}>Enviar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $("#city").click(function (e) {
+            e.preventDefault();
+
+            $.ajax({
+                url: '/pegar-escola',
+                type: 'POST',
+                data: $('#consent_form').serialize(),
+                success: function (selectOptions) {
+                    $("#school").empty();
+                    for (var i = 0; i < selectOptions.length; i++) {
+                        $("#school").append(
+                            $("<option></option>")
+                                .attr("value", selectOptions[i]["id"])
+                                .text(selectOptions[i]["name"])
+                        );
+                    }
+                }
+            });
+        }).click();
+    </script>
+{% endblock %}
