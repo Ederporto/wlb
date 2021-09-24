@@ -20,19 +20,19 @@
         </div>
         <div class="w3-row">
             <div class="w3-quarter">&nbsp;</div>
-            {% if not username %}
+            {% if username and registered %}
                 <div class="w3-half">
-                    <a href="{{ url_for('subscription') }}">
+                    <a href="{{ url_for('update_user') }}">
                         <button type="button" style="width:100%; max-width: 360px">
-                            Inscrição
+                            Modificar inscrição
                         </button>
                     </a>
                 </div>
             {% else %}
                 <div class="w3-half">
-                    <a href="{{ url_for('update_user') }}">
+                    <a href="{{ url_for('subscription') }}">
                         <button type="button" style="width:100%; max-width: 360px">
-                            Modificar inscrição
+                            Inscrição
                         </button>
                     </a>
                 </div>
