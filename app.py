@@ -264,5 +264,23 @@ def update_user():
         return redirect(url_for("home"))
 
 
+@app.route('/ver_cadastros', methods=['GET'])
+def ver_cadastros():
+    username = get_username()
+
+    users = User.query.all()
+    users_list = []
+    if users and username in app.config['COORDINATORS']:
+        for user in users:
+            id_ = user.id
+            name = user.name
+            school = School.query.filter_by(id=user.school).first()
+            city = City.query.filter_by(id=school.id).first()
+            users_list.append({"id": id_, "name": name, "school": school.name, "city": city.name})
+        return render_template("cadastros.html", users=users_list)
+    else:
+        return redirect(url_for('home'))
+
+
 if __name__ == '__main__':
     app.run()

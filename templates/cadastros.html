@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block navbar %}
+    {% with lang=lang, username=username %}
+        {% include 'topnavbar.html' %}
+    {% endwith %}
+{% endblock %}
+
+{% block title %}Ver cadastros{% endblock %}
+{% block content %}
+    <div class="w3-container" style="text-align: center; padding:10px">
+        <div class="w3-row">
+            <div class="w3-quarter">&nbsp;</div>
+            <div class="w3-half" style="text-align: justify">
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>NOME</th>
+                        <th>ESCOLA</th>
+                        <th>CIDADE</th>
+                    </tr>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.school }}</td>
+                            <td>{{ user.city }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
