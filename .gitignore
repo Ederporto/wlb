@@ -6,3 +6,5 @@ Lib/
 Scripts/
 venv/
 users.db
+cities.db
+schools.db
